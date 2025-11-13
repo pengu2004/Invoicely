@@ -1,4 +1,7 @@
 "use client";
+
+import InvoiceBuilder from "../components/InvoiceBuilder";
+
 export default function CreateInvoice() {
-  return <h1>hey</h1>;
+  return <InvoiceBuilder />;
 }
