@@ -67,8 +67,8 @@ export default function InvoiceBuilder() {
     }
   };
 
-  const isFormValid = () => {
-    return (
+  const isFormValid = (): boolean => {
+    return !!(
       invoiceData.companyName &&
       invoiceData.companyEmail &&
       invoiceData.clientName &&
@@ -78,6 +78,8 @@ export default function InvoiceBuilder() {
       )
     );
   };
+
+  const formValid: boolean = isFormValid();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -129,7 +131,7 @@ export default function InvoiceBuilder() {
                 onChange={handleDataChange}
                 onGeneratePDF={handleGeneratePDF}
                 isGeneratingPDF={isGeneratingPDF}
-                isFormValid={isFormValid()}
+                isFormValid={formValid}
               />
             </div>
           )}
@@ -148,7 +150,7 @@ export default function InvoiceBuilder() {
                 </button>
                 <button
                   onClick={handleGeneratePDF}
-                  disabled={!isFormValid() || isGeneratingPDF}
+                  disabled={!formValid || isGeneratingPDF}
                   className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 font-mono text-sm font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   {isGeneratingPDF ? "Generating..." : "Download PDF"}
