@@ -45,17 +45,6 @@ export default function Header() {
             Invoicely{" "}
           </Typography>
           <Box sx={{ flexGrow: 1 }}></Box>
-          <Button
-            onClick={handleCreateInvoice}
-            sx={{
-              color: "black",
-              fontWeight: "bold",
-              mr: 2,
-              "&:hover": { bgcolor: "rgba(0,0,0,0.1)" },
-            }}
-          >
-            Create Invoice
-          </Button>
         </Toolbar>
       </AppBar>
     </Box>
