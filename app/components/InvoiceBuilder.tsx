@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import InvoiceForm from "./InvoiceForm";
+import { useRouter } from "next/navigation";
 import InvoicePreview from "./InvoicePreview";
 import { generateInvoicePDF } from "../lib/generatePdf";
 
@@ -30,6 +30,7 @@ export interface InvoiceFormData {
 }
 
 export default function InvoiceBuilder() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"form" | "preview">("form");
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [invoiceData, setInvoiceData] = useState<InvoiceFormData>({
@@ -84,13 +85,15 @@ export default function InvoiceBuilder() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto py-8 px-4">
+        {/* Navigation Header */}
+
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-800 font-mono mb-2">
-            Invoice Builder
+            Create New Invoice
           </h1>
           <p className="text-gray-600 font-mono">
-            Create professional invoices with ease
+            Fill in the details below to generate your professional invoice
           </p>
         </div>
 

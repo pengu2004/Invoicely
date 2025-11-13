@@ -1,5 +1,14 @@
+"use client";
 import Button from "@mui/material/Button";
+import { useRouter } from "next/navigation";
+
 export default function Hero() {
+  const router = useRouter();
+
+  const handleCreateInvoice = () => {
+    router.push("/create-invoice");
+  };
+
   return (
     <>
       <h1 className="text-4xl font-bold text-center mt-20 text-black">
@@ -10,6 +19,7 @@ export default function Hero() {
       </h3>
       <Button
         variant="contained"
+        onClick={handleCreateInvoice}
         sx={{
           display: "block",
           mx: "auto",

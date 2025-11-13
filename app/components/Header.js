@@ -1,11 +1,18 @@
+"use client";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { IBM_Plex_Mono } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
+
+  const handleCreateInvoice = () => {
+    router.push("/create-invoice");
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -31,13 +38,24 @@ export default function Header() {
               color: "black",
               position: "absolute",
               left: "50%",
+              fontFamily: "IBM Plex Mono",
               transform: " translateX(-50%)",
             }}
           >
             Invoicely{" "}
           </Typography>
           <Box sx={{ flexGrow: 1 }}></Box>
-          <Button color="inherit">Login</Button>
+          <Button
+            onClick={handleCreateInvoice}
+            sx={{
+              color: "black",
+              fontWeight: "bold",
+              mr: 2,
+              "&:hover": { bgcolor: "rgba(0,0,0,0.1)" },
+            }}
+          >
+            Create Invoice
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
