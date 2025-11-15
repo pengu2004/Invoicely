@@ -1,7 +1,9 @@
 "use client";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
-
+import CountUp from "./CountUp";
+import TextType from "./TextType";
+import SplitText from "./SplitText";
 export default function Hero() {
   const router = useRouter();
 
@@ -11,12 +13,28 @@ export default function Hero() {
 
   return (
     <>
-      <h1 className="text-4xl font-bold text-center mt-20 text-black">
-        Streamlined Invoicing for Freelancers
-      </h1>
-      <h3 className="text-2xl  text-center mt-20 text-black">
-        Simplify your payments
-      </h3>
+      <div className="max-w-3xl mx-auto px-4 text-center">
+        <h1 className="text-4xl font-bold mt-20 text-black">
+          Streamlined Invoicing for Freelancers
+        </h1>
+        <TextType
+          className="text-2xl  text-black mt-20"
+          text={["Simplify your payments"]}
+          typingSpeed={75}
+          pauseDuration={1500}
+          showCursor={true}
+          cursorCharacter="|"
+        />
+        <div className="flex flex-col items-center mt-10">
+          <CountUp
+            className="text-5xl font-bold text-black text-center"
+            to={100}
+            onStart={() => {}}
+            onEnd={() => {}}
+          />
+          <h2>Invoice Processed</h2>
+        </div>
+      </div>
       <Button
         variant="contained"
         onClick={handleCreateInvoice}

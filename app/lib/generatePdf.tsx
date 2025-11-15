@@ -133,7 +133,7 @@ export async function generateInvoicePDF(data: InvoiceFormData): Promise<void> {
     });
 
     // Invoice Title
-    page.drawText("Invoice", {
+    page.drawText(data.agencyName, {
       x: margin + 35,
       y: currentY - 30,
       size: 36,
@@ -548,14 +548,6 @@ export async function generateInvoicePDF(data: InvoiceFormData): Promise<void> {
         color: primaryColor,
       });
     }
-
-    page.drawText("Made with care by Tejus", {
-      x: margin,
-      y: footerY,
-      size: 9,
-      font: ibmPlexMonoItalic,
-      color: mediumGray,
-    });
 
     page.drawText(`Generated on ${new Date().toLocaleDateString()}`, {
       x: width - margin - 120,

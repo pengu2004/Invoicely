@@ -77,7 +77,7 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
               </svg>
             </div>
             <h1 className="text-4xl font-light italic text-gray-800 font-mono">
-              Invoice
+              {data.agencyName}{" "}
             </h1>
           </div>
           <div className="text-right">
@@ -96,9 +96,6 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {/* From Section */}
           <div>
-            <div className="text-lg font-medium text-gray-800 mb-4 font-mono">
-              {data.agencyName || data.companyName || "Your Company Name"}
-            </div>
             <div className="text-sm text-gray-600 mb-2 font-mono">
               Due: {formatDate(data.dueDate)}
             </div>
@@ -239,9 +236,6 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
                 <span className="font-medium">UPI ID:</span> {data.upiId}
               </div>
             )}
-            <div className="flex items-center gap-2 text-sm text-gray-500 font-mono">
-              <span>Notes: Made with love by Tejus</span>
-            </div>
           </div>
         </div>
       </div>

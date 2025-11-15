@@ -311,7 +311,7 @@ function InvoiceFormContent({
                 value={data.companyPhone}
                 onChange={(e) => updateFormData("companyPhone", e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded font-mono text-sm text-black"
-                placeholder="+1 (555) 123-4567"
+                placeholder="+9! 12345678899"
               />
             </div>
           </div>
@@ -399,7 +399,7 @@ function InvoiceFormContent({
                 value={data.clientPhone}
                 onChange={(e) => updateFormData("clientPhone", e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded font-mono text-sm text-black"
-                placeholder="+1 (555) 987-6543"
+                placeholder="+91 12345678899"
               />
             </div>
           </div>
