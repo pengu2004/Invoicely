@@ -24,6 +24,8 @@ export default function Hero() {
           pauseDuration={1500}
           showCursor={true}
           cursorCharacter="|"
+          variableSpeed={false}
+          onSentenceComplete={() => {}}
         />
         <div className="flex flex-col items-center mt-10">
           <CountUp
