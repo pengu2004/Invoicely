@@ -16,14 +16,10 @@ export default function Invoice() {
     dueDate: "2024-07-31",
     from: {
       companyName: "Your Company Name",
-      address: "123 Business Rd",
-      cityStateZip: "Suite 100, Anytown, CA 90210",
       email: "info@yourcompany.com",
     },
     billTo: {
       companyName: "Client Company Inc.",
-      address: "456 Client St",
-      cityStateZip: "Client City, NY 10001",
       email: "client@example.com",
     },
     items: [
@@ -88,7 +84,7 @@ export default function Invoice() {
               color: "#333",
             }}
           >
-            Invoice
+            Your Company Name
           </Typography>
         </Grid>
         <Grid item textAlign="right">

@@ -77,7 +77,7 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
               </svg>
             </div>
             <h1 className="text-4xl font-light italic text-gray-800 font-mono">
-              {data.agencyName}{" "}
+              {data.companyName}{" "}
             </h1>
           </div>
           <div className="text-right">
