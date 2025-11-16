@@ -1,9 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import InvoicePreview from "./InvoicePreview";
 import { generateInvoicePDF } from "../lib/generatePdf";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import { visuallyHidden } from "@mui/utils";
+import CloudUploadOutlined from "@mui/icons-material/CloudUploadOutlined";
+const VisuallyHiddenInput = styled("input")({
+  ...visuallyHidden,
+});
 
 export interface InvoiceItem {
   id: string;
@@ -21,6 +29,9 @@ export interface InvoiceFormData {
   companyEmail: string;
   companyPhone: string;
   agencyName: string;
+  logo: string;
+  logoType: string;
+  logoFile: File | null;
   clientName: string;
   clientEmail: string;
   clientPhone: string;
@@ -33,6 +44,8 @@ export default function InvoiceBuilder() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"form" | "preview">("form");
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  const [showUploadButton, setShowUploadButton] = useState(true);
   const [invoiceData, setInvoiceData] = useState<InvoiceFormData>({
     invoiceNumber: `INV-${new Date().getFullYear()}-${String(Date.now()).slice(-3)}`,
     invoiceDate: new Date().toISOString().split("T")[0],
@@ -47,6 +60,9 @@ export default function InvoiceBuilder() {
     clientEmail: "",
     clientPhone: "",
     upiId: "",
+    logo: "",
+    logoType: "none",
+    logoFile: null,
     items: [{ id: "1", description: "", quantity: 1, unitPrice: 0, total: 0 }],
     notes: "Payment is due within 30 days.",
   });
@@ -135,6 +151,8 @@ export default function InvoiceBuilder() {
                 onGeneratePDF={handleGeneratePDF}
                 isGeneratingPDF={isGeneratingPDF}
                 isFormValid={formValid}
+                showUploadButton={showUploadButton}
+                setShowUploadButton={setShowUploadButton}
               />
             </div>
           )}
@@ -173,6 +191,8 @@ interface InvoiceFormContentProps {
   onChange: (data: InvoiceFormData) => void;
   onGeneratePDF: () => void;
   isGeneratingPDF: boolean;
+  showUploadButton: boolean;
+  setShowUploadButton: React.Dispatch<React.SetStateAction<boolean>>;
   isFormValid: boolean;
 }
 
@@ -182,6 +202,8 @@ function InvoiceFormContent({
   onGeneratePDF,
   isGeneratingPDF,
   isFormValid,
+  showUploadButton,
+  setShowUploadButton,
 }: InvoiceFormContentProps) {
   const updateFormData = (field: keyof InvoiceFormData, value: any) => {
     onChange({ ...data, [field]: value });
@@ -223,7 +245,18 @@ function InvoiceFormContent({
       }),
     });
   };
-
+  const addLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    onChange({
+      ...data,
+      logo: url,
+      logoType: file.type,
+      logoFile: file,
+    });
+    setShowUploadButton(false);
+  };
   const calculateSubtotal = () => {
     return data.items.reduce((sum, item) => sum + item.total, 0);
   };
@@ -235,6 +268,52 @@ function InvoiceFormContent({
         <h2 className="text-lg font-medium text-gray-800 mb-4 font-mono">
           Invoice Details
         </h2>
+        <div className="mb-6">
+          <h3 className="text-sm font-mono text-gray-700 mb-2">Company Logo</h3>
+
+          {showUploadButton ? (
+            <div className="flex items-center gap-4">
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadOutlined />}
+                className="font-mono"
+              >
+                Upload Logo
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/*"
+                  onChange={addLogo}
+                />
+              </Button>
+
+              <p className="text-xs text-gray-500 font-mono">
+                PNG or JPG. Transparent background recommended.
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <Image
+                src={data.logo}
+                height={80}
+                width={80}
+                alt="Company Logo"
+                className="w-20 h-20 object-contain rounded border border-gray-300 bg-white shadow-sm"
+              />
+
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-mono text-gray-700">Logo Uploaded</p>
+
+                <button
+                  className="text-blue-600 text-xs underline font-mono hover:text-blue-800"
+                  onClick={() => setShowUploadButton(true)}
+                >
+                  Change Logo
+                </button>
+              </div>
+            </div>
+          )}
+        </div>{" "}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm text-gray-600 mb-1">
@@ -317,29 +396,8 @@ function InvoiceFormContent({
           </div>
         </div>
 
-        {/* Agency Information */}
-        <div className="mb-8">
-          <h3 className="text-lg font-medium text-gray-800 mb-4 font-mono">
-            Agency:
-          </h3>
-          <div className="max-w-md">
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">
-                Agency Name
-              </label>
-              <input
-                type="text"
-                value={data.agencyName}
-                onChange={(e) => updateFormData("agencyName", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded font-mono text-sm text-black"
-                placeholder="Agency Name"
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Payment Information */}
-        <div className="mb-8">
+        <div className="mb-9">
           <h3 className="text-lg font-medium text-gray-800 mb-4 font-mono">
             Payment Information:
           </h3>
@@ -390,16 +448,6 @@ function InvoiceFormContent({
                 className="w-full p-2 border border-gray-300 rounded font-mono text-sm text-black"
                 placeholder="client@example.com"
                 required
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">Phone</label>
-              <input
-                type="tel"
-                value={data.clientPhone}
-                onChange={(e) => updateFormData("clientPhone", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded font-mono text-sm text-black"
-                placeholder="+91 12345678899"
               />
             </div>
           </div>

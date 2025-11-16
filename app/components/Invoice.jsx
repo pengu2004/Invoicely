@@ -57,23 +57,7 @@ export default function Invoice() {
         <Grid item sx={{ display: "flex", alignItems: "center" }}>
           {/* Small Flower Illustration */}
           {/* You can replace this with an actual SVG icon or image component */}
-          <Box sx={{ mr: 1, display: "flex", alignItems: "center" }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ color: "#888" }} // Subtle grey color for the flower
-            >
-              <path d="M12 2a5 5 0 0 0-5 5c0 4.2 7 13 7 13s7-8.8 7-13a5 5 0 0 0-5-5z" />
-              <circle cx="12" cy="7" r="2" />
-            </svg>
-          </Box>
+
           <Typography
             variant="h4"
             component="h1"

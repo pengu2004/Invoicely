@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 export interface InvoiceItem {
   id: string;
@@ -19,6 +20,7 @@ export interface InvoiceFormData {
   companyPhone: string;
   agencyName: string;
   clientName: string;
+  logo: string;
   clientEmail: string;
   clientPhone: string;
   upiId: string;
@@ -54,30 +56,18 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
       {/* Invoice Header */}
       <div className="p-8 border-b border-gray-100">
         <div className="flex justify-between items-start">
+          <div>
+            <Image
+              src={data.logo}
+              alt="logo"
+              width={120}
+              height={120}
+              unoptimized
+            />
+          </div>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-gray-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </div>
             <h1 className="text-4xl font-light italic text-gray-800 font-mono">
-              {data.companyName}{" "}
+              {data.companyName || "Company Name"}{" "}
             </h1>
           </div>
           <div className="text-right">

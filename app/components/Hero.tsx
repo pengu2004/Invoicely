@@ -30,7 +30,7 @@ export default function Hero() {
         <div className="flex flex-col items-center mt-10">
           <CountUp
             className="text-5xl font-bold text-black text-center"
-            to={100}
+            to={1000}
             onStart={() => {}}
             onEnd={() => {}}
           />

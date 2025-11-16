@@ -35,6 +35,9 @@ interface InvoiceFormData {
 
   // Invoice items
   items: InvoiceItem[];
+  logo: string;
+  logoFile: File | null;
+  logoType: string;
 
   // Notes
   notes: string;
@@ -54,6 +57,9 @@ export default function InvoiceForm() {
     clientName: "",
     clientEmail: "",
     clientPhone: "",
+    logo: "",
+    logoFile: null,
+    logoType: "",
     upiId: "",
     items: [{ id: "1", description: "", quantity: 1, unitPrice: 0, total: 0 }],
     notes: "Payment is due within 30 days.",

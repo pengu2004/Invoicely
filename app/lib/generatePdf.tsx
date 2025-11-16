@@ -32,7 +32,9 @@ export interface InvoiceFormData {
 
   // Invoice items
   items: InvoiceItem[];
-
+  logo: string;
+  logoType: string;
+  logoFile: File | null;
   // Notes
   notes: string;
 }
@@ -95,7 +97,24 @@ export async function generateInvoicePDF(data: InvoiceFormData): Promise<void> {
     const formatCurrency = (amount: number): string => {
       return `$${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     };
+    const formatImage = async (file: File) => {
+      const imgBytes = await file.arrayBuffer();
 
+      const header = new Uint8Array(imgBytes).slice(0, 8);
+
+      // PNG signature
+      const isPng =
+        header[0] === 0x89 &&
+        header[1] === 0x50 &&
+        header[2] === 0x4e &&
+        header[3] === 0x47;
+
+      if (isPng) {
+        return await pdfDoc.embedPng(imgBytes);
+      } else {
+        return await pdfDoc.embedJpg(imgBytes);
+      }
+    };
     const formatDate = (dateString: string): string => {
       const date = new Date(dateString);
       return date.toLocaleDateString("en-US", {
@@ -115,30 +134,22 @@ export async function generateInvoicePDF(data: InvoiceFormData): Promise<void> {
     });
 
     // Location pin icon (circle)
-    page.drawCircle({
-      x: margin + 12,
-      y: currentY - 25,
-      size: 10,
-      color: lightGray,
-      borderColor: mediumGray,
-      borderWidth: 1.5,
-    });
+    if (data.logoFile) {
+      const pdfLogo = await formatImage(data.logoFile);
 
-    // Inner dot for location pin
-    page.drawCircle({
-      x: margin + 12,
-      y: currentY - 25,
-      size: 4,
-      color: mediumGray,
-    });
-
-    // Invoice Title
-    page.drawText(data.agencyName, {
-      x: margin + 35,
+      page.drawImage(pdfLogo, {
+        x: margin,
+        y: currentY - 55,
+        width: 80,
+        height: 80,
+      });
+    } // Invoice Title
+    page.drawText(data.companyName, {
+      x: margin + 80,
       y: currentY - 30,
       size: 36,
-      font: ibmPlexMonoItalic,
-      color: primaryColor,
+      font: ibmPlexMonoBold,
+      color: accentColor,
     });
 
     // Invoice details box (top right)
@@ -179,15 +190,6 @@ export async function generateInvoicePDF(data: InvoiceFormData): Promise<void> {
 
     // Company and Client Information Section
     const infoSectionY = currentY;
-
-    // Company section (left) - Show agency name as header
-    page.drawText(data.agencyName || data.companyName || "Your Company", {
-      x: margin,
-      y: infoSectionY,
-      size: 16,
-      font: ibmPlexMonoBold,
-      color: primaryColor,
-    });
 
     let companyY = infoSectionY - 25;
 
